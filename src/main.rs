@@ -1,18 +1,9 @@
-use actix_web::{web, App, HttpRequest, HttpServer, Responder};
-
-async fn greet(req: HttpRequest) -> impl Responder {
-    let name = req.match_info().get("name").unwrap_or("World");
-    format!("Hello {}", &name)
-}
+use std::net::TcpListener;
+use zero2prod::run;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            .route("/", web::get().to(greet))
-            .route("/{name}", web::get().to(greet))
-    })
-    .bind("127.0.0.1:4444")?
-    .run()
-    .await
+    let listener = TcpListener::bind("127.0.0.1:4444")
+        .expect("Failed to bind to port 4444");
+    run(listener)?.await
 }
