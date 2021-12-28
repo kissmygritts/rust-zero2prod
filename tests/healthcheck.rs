@@ -1,6 +1,6 @@
 use std::net::TcpListener;
 
-#[actix_rt::test]
+#[tokio::test]
 async fn healthcheck_works() {
     let address = spawn_app();
     let client = reqwest::Client::new();
