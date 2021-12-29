@@ -1,0 +1,7 @@
+application_port: 4444
+database:
+  host: "127.0.0.1"
+  port: 5432
+  username: "rustacean"
+  password: "rust"
+  database_name: "newsletter"
