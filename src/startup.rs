@@ -1,5 +1,6 @@
 use actix_web::dev::Server;
 use actix_web::{web, App, HttpServer};
+use tracing_actix_web::TracingLogger;
 use sqlx::PgPool;
 use std::net::TcpListener;
 
@@ -13,9 +14,11 @@ pub fn run(
     
     let server = HttpServer::new(move || {
         App::new()
+            // add middleware with the wrap method on App
+            .wrap(TracingLogger::default())
             .route("/healthcheck", web::get().to(healthcheck))
             .route("/subscriptions", web::post().to(subscribe))
-            // get a pointer copy and attach it to the application state
+            // attach the database ppol to the server with .app_data
             .app_data(db_pool.clone())
     })
     .listen(listener)?
